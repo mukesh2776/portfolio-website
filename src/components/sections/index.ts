@@ -1,0 +1,13 @@
+export { Hero } from "./hero";
+export { About } from "./about";
+export { Skills } from "./skills";
+export { Experience } from "./experience";
+export { Projects } from "./projects";
+export { LeetCode } from "./leetcode";
+export { FlickLeadership } from "./flick";
+export { Services } from "./services";
+export { WhyHireMe } from "./why-hire-me";
+export { Process } from "./process";
+export { Testimonials } from "./testimonials";
+export { Contact } from "./contact";
+export { Footer } from "./footer";
