@@ -51,7 +51,7 @@ export function LoadingScreen() {
           }}
           transition={{
             duration: 0.6,
-            ease: [0.4, 0, 0.2, 1],
+            ease: [0.4, 0, 0.2, 1] as const,
           }}
         >
           {/* Subtle gradient orb behind the text */}
@@ -77,7 +77,7 @@ export function LoadingScreen() {
                 transition={{
                   duration: 0.5,
                   delay: 0.3 + index * 0.06,
-                  ease: [0.4, 0, 0.2, 1],
+                  ease: [0.4, 0, 0.2, 1] as const,
                 }}
               >
                 {letter === " " ? "\u00A0" : letter}
@@ -93,7 +93,7 @@ export function LoadingScreen() {
             transition={{
               duration: 0.8,
               delay: 1.0,
-              ease: [0.4, 0, 0.2, 1],
+              ease: [0.4, 0, 0.2, 1] as const,
             }}
           />
 

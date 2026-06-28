@@ -76,7 +76,7 @@ export function Navbar() {
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
-          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+          transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] as const }}
           className={cn(
             "fixed inset-x-0 top-0 z-50 mx-auto mt-0 w-full transition-all duration-300 sm:mt-6 sm:max-w-4xl sm:px-6",
             scrolled ? "pointer-events-none" : "pointer-events-auto"
@@ -168,7 +168,7 @@ export function Navbar() {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] as const }}
                 className="absolute inset-x-0 top-full z-40 overflow-hidden bg-background/95 border-b border-border backdrop-blur-xl sm:hidden"
               >
                 <div className="flex flex-col gap-2 px-6 py-6">

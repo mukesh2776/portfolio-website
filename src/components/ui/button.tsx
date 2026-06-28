@@ -22,13 +22,19 @@ import type { ReactNode, ButtonHTMLAttributes } from "react";
 type ButtonVariant = "primary" | "secondary" | "ghost";
 type ButtonSize = "default" | "lg" | "sm";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps
+  extends Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    "onAnimationStart" | "onDragStart" | "onDragEnd" | "onDrag" | "style"
+  > {
   children: ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
   href?: string;
   className?: string;
   icon?: ReactNode;
+  target?: string;
+  rel?: string;
 }
 
 const variantStyles: Record<ButtonVariant, string> = {
@@ -65,7 +71,7 @@ export function Button({
   const motionProps = {
     whileHover: { scale: 1.03 },
     whileTap: { scale: 0.97 },
-    transition: { type: "spring", stiffness: 400, damping: 25 },
+    transition: { type: "spring" as const, stiffness: 400, damping: 25 },
   };
 
   const content = (
