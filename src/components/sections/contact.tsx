@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { PERSONAL } from "@/lib/constants";
 import { SectionHeading, Button } from "@/components/ui";
 import { ScrollReveal } from "@/components/animations";
+
+const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || "";
 
 /**
  * Contact — Complete business outreach form and channels.
@@ -23,13 +25,45 @@ export function Contact() {
   });
 
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Simulate API request
-    setTimeout(() => {
+    setIsSubmitting(true);
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: formState.name,
+          email: formState.email,
+          phone: formState.phone,
+          message: formState.description,
+          subject: `New contact form submission from ${formState.name}`,
+          from_name: formState.name,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || "Message could not be sent. Please try again.");
+      }
+
       setSubmitted(true);
-    }, 800);
+      setFormState({ name: "", email: "", phone: "", description: "" });
+    } catch (error) {
+      setErrorMessage(error instanceof Error ? error.message : "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -126,6 +160,12 @@ export function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                  {errorMessage && (
+                    <div className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                      {errorMessage}
+                    </div>
+                  )}
+
                   {/* Name */}
                   <div className="flex flex-col gap-1.5">
                     <label htmlFor="name" className="text-xs font-semibold text-foreground-muted">
@@ -190,8 +230,8 @@ export function Contact() {
                   </div>
 
                   {/* Submit Button */}
-                  <Button type="submit" variant="primary" className="text-xs font-semibold py-3 h-auto">
-                    Send Message
+                  <Button type="submit" variant="primary" className="text-xs font-semibold py-3 h-auto" disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               )}
